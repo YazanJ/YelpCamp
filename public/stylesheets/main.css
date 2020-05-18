@@ -1,0 +1,27 @@
+/* Selects all image tags within thumbnails */
+/* Image takes 100% of thumbnail */
+.thumbnail img {   
+    width: 100%
+}
+
+.thumbnail {
+padding: 0;
+}
+
+/*This is targeting any element that has both these classes */
+.thumbnail .caption-full{
+    padding: 9px;
+}
+
+.deleteForm {
+    display: inline;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+}
+
+.navbar-center {
+    text-align: center;
+}
