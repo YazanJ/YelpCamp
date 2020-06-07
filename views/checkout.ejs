@@ -1,0 +1,132 @@
+<%- include("partials/header") %>
+
+<style>
+body {
+    background-color: #e6e6ff;
+}
+</style>
+
+<form action="/pay" method="POST">
+  <input type="hidden" id="formPrice" value="<%=totalPrice%>">
+</form>
+
+<div class="container">
+  <h2><%=campground.name%> is waiting for you!</h2>
+</div>
+
+<div class="container">
+  <h3>Length of stay: <%=nights%> Nights</h3>
+  <h3>Total price : $<%=totalPrice%></h3>
+    <div class="row">
+      <div class="col-md-offset-3 col-md-4 col-sm-6">
+        <div class="sr-root">
+          <div class="sr-main">
+            <h3>Registration Payment</h3>
+            <form id="payment-form" class="sr-payment-form">
+              <div class="sr-combo-inputs-row">
+                <div class="sr-input sr-card-element b1" id="card-element"></div>
+              </div>
+              <div class="sr-field-error" id="card-errors" role="alert"></div>
+              <button class="btn btn-primary text b1" id="submit">
+                <div class="spinner hidden" id="spinner"></div>
+                <span id="button-text">Pay $<%=totalPrice%></span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  var displayError = document.getElementById('card-errors');
+  function errorHandler(err) {
+    changeLoadingState(false);
+    displayError.textContent = err;
+  }
+
+  var orderData = {
+    items: [{ id: "yelpcamp-registration-fee" }],
+    currency: "usd"
+  };
+
+  // Set your publishable key: remember to change this to your live publishable key in production
+  // See your keys here: https://dashboard.stripe.com/account/apikeys
+  var stripe = Stripe('pk_test_bvii9HHRVOIYmd8oSM7yA3KN00oWPr2XvV');
+  var elements = stripe.elements();
+
+  // Set up Stripe.js and Elements to use in checkout form
+  var style = {
+    base: {
+      color: "#32325d",
+    }
+  };
+
+  var card = elements.create("card", { style: style }); 
+  card.mount("#card-element");
+
+  card.addEventListener('change', function(event) {
+    if (event.error) {
+      errorHandler(event.error.message);
+    } else {
+      errorHandler('');
+    }
+  });
+
+  var form = document.getElementById('payment-form');
+
+  form.addEventListener('submit', function(ev) {
+    ev.preventDefault();
+    changeLoadingState(true);
+    
+    stripe.createPaymentMethod("card", card)
+          .then(function(result) {
+            if (result.error) {
+              errorHandler(result.error.message);
+            } else {
+              orderData.paymentMethodId = result.paymentMethod.id;
+              orderData.totalPrice = <%=totalPrice%>;
+              orderData.price = <%=price%>;
+              orderData.nights = <%=nights%>;
+        
+              return fetch("/pay", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify(orderData)
+              });
+            }
+          })
+          .then(function(result) {
+            return result.json();
+          })
+          .then(function(response) {
+            if (response.error) {
+              errorHandler(response.error);
+            } else {
+              changeLoadingState(false);
+              // redirect to /campgrounds with a query string
+              // that invokes a success flash message
+              window.location.href = '/campgrounds?paid=true'
+            }
+          }).catch(function(err) {
+            errorHandler(err.error);
+          });
+  });
+
+  // Show a spinner on payment submission
+  function changeLoadingState(isLoading) {
+      if (isLoading) {
+          document.querySelector("button").disabled = true;
+          document.querySelector("#spinner").classList.remove("hidden");
+          document.querySelector("#button-text").classList.add("hidden");
+      } else {
+          document.querySelector("button").disabled = false;
+          document.querySelector("#spinner").classList.add("hidden");
+          document.querySelector("#button-text").classList.remove("hidden");
+      }
+  };
+</script>
+
+<%- include("partials/footer") %>

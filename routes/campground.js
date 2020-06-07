@@ -13,6 +13,8 @@ var options = {
 
 var geocoder = NodeGeocoder(options);
 
+////////////////////////////////////////////////////////////////////////
+
 //Landing page 
 router.get("/", function(req, res){
     res.render("landing");
@@ -20,6 +22,7 @@ router.get("/", function(req, res){
 
 //SHOW (GET) - show all campgrounds 
 router.get("/campgrounds", function(req, res){
+    if(req.query.paid) res.locals.success = "Payment succeeded, enjoy your trip!";
     //Get all campgrounds from DB
     Campground.find({}, function(err, allCampgrounds){
         if(err || !allCampgrounds){
@@ -136,9 +139,6 @@ router.put("/campgrounds/:id", middlewareObj.checkCampgroundOwnership, function(
             req.flash('error', 'Invalid address');
             return res.redirect('back');
         }
-        // var lat = data.results[0].geometry.location.lat;
-        // var lng = data.results[0].geometry.location.lng;
-        // var location = data.results[0].formatted_address;
         req.body.campground.lat = data[0].latitude;
         req.body.campground.lng = data[0].longitude;
         req.body.campground.location = data[0].formattedAddress;
@@ -165,5 +165,6 @@ router.delete("/campgrounds/:id", middlewareObj.checkCampgroundOwnership, functi
         }
     }
 )} );
+
 
 module.exports = router;

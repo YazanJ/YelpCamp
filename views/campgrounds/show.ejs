@@ -20,10 +20,13 @@
                     <h4 class="pull-right">$<%= campground.price %>/night</h4>
                     <h4><a><%= campground.name %></a></h4>
                     <p><%= campground.description %></p>
+                    <h4 id="reserve" class="pull-right"><a href="/campgrounds/<%= campground._id %>/reserve" class=" btn btn-primary">Reserve</a></h4>
                     <p>
                         <em>
-                            Submitted By: <b><%= campground.author.username %></b></p>
+                            Submitted By: <b><%= campground.author.username %></b>
                         </em>
+                    </p>
+                    
                         <% if(currentUser && campground.author.id.equals(currentUser._id) || (currentUser && currentUser.isAdmin) ){ %>
                             <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>     
                             <form class="deleteForm" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">

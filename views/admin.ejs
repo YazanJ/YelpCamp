@@ -1,0 +1,24 @@
+<%- include("partials/header") %>
+
+<div class="container">
+    <% if(currentUser && currentUser.isAdmin){  %>
+        <div class="container">
+            <h1>User list</h1>
+            <% users.forEach(function(user){ %>
+                <ul>
+                    <li><%=user.username%></li>
+                    <div >
+                        <form class="deleteForm" action="/admin/<%=user._id%>/delete?_method=DELETE" method="POST">
+                            <button action="submit" class="btn btn-danger">Delete</button>
+                        <form> 
+                    </div>
+                </ul>
+            <% }); %>
+    <% } else { %>
+        <h2>You don't have access to this page</h2>
+    <%}%>
+    <a class="btn btn-primary" type="button" href="/campgrounds">Back</a>
+    </div> 
+</div>
+
+<%- include("partials/footer") %>

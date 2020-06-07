@@ -1,11 +1,16 @@
 /* Selects all image tags within thumbnails */
 /* Image takes 100% of thumbnail */
-.thumbnail img {   
-    width: 100%
-}
+/* .thumbnail img {   
+    width: 100%;
+    height: 100%
+} */
 
 .thumbnail {
-padding: 0;
+padding: 4px;
+height: auto;
+display: block;
+margin-right: auto;
+margin-left: auto;
 }
 
 /*This is targeting any element that has both these classes */
@@ -18,10 +23,24 @@ padding: 0;
 }
 
 #map {
-    height: 400px;
+    height: 600px;
     width: 100%;
 }
 
 .navbar-center {
     text-align: center;
+}
+
+.b1{
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+}
+
+#reserve {
+    margin-top: -7px;
+}
+
+#admin {
+    color: #003399;
 }

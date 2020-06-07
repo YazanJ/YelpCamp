@@ -1,0 +1,19 @@
+<%- include("../views/partials/header") %>
+
+<div class="container">
+    <div class="row">
+        <h2 style="text-align: center;">Booking <em><%=campground.name%></em></h2>
+        <h3 style="text-align: center;">Nice choice!</h3>
+        <div style="width: 50%; margin: 25px auto">
+            <form action="/campgrounds/<%=campground._id%>/reserve" method="POST">
+                <div class="form-group">
+                    <label for="nights">Number of nights</label>
+                    <input class="form-control" type="number" step="1" required=true min=1 name="nights">
+                    <button class="btn btn-primary b1">Next</button>
+                 </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include("../views/partials/footer") %>
