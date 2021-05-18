@@ -58,5 +58,4 @@ middlewareObj.checkCommentOwnership = function(req, res, next){  //Need these 3 
 };
 
 
-
 module.exports = middlewareObj;
