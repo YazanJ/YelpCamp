@@ -20,7 +20,6 @@ var style = {
     color: "#32325d",
   }
 };
-
 console.log(totalPrice);
 
 var card = elements.create("card", { style: style }); 

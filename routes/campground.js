@@ -45,7 +45,7 @@ router.post("/campgrounds", middlewareObj.isLoggedIn, function(req, res){
     };
     geocoder.geocode(req.body.location, function (err, data) {
         if (err || !data.length) {
-            console.log(err);
+            console.log('Error occured in geocoder', err);
             req.flash('error', 'Invalid address — CREATE ROUTE');
             return res.redirect('back');
         }
